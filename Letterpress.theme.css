@@ -1,0 +1,1048 @@
+/**
+ * @name Letterpress
+ * @author Mercenary
+ * @version 1.0.0
+ * @description A dark paper, letterpress-style theme for Discord.
+ * @source https://github.com/MercenaryUSA/letterpress-theme
+ * @website https://github.com/MercenaryUSA/letterpress-theme
+ * @invite THtgtUc4By
+ */
+
+/* Fonts (imports must stay at the top of the file). */
+@import url("https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Fraunces:opsz,wght@9..144,500..800&family=Caveat:wght@500;700&family=Space+Mono:wght@400;700&display=swap");
+
+/* =========================================================================
+   1. KNOBS: change these to restyle the whole theme
+   ========================================================================= */
+:root {
+    /* Fonts */
+    --lp-font: "Bricolage Grotesque", "gg sans", "Noto Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --lp-font-display: "Fraunces", Georgia, "Times New Roman", serif;
+    --lp-font-hand: "Caveat", "Comic Sans MS", cursive;
+    --lp-font-code: "Space Mono", "gg mono", Consolas, "Courier New", monospace;
+
+    /* Inks: one loud (red), one warm (gold), one quiet (cream).
+       Blue and green only appear where Discord needs them to mean something. */
+    --lp-red: #e07a62;
+    /* stamp ink: brand, focus, mentions of you */
+    --lp-red-deep: #c4624c;
+    --lp-gold: #d8b36e;
+    /* highlighter: hover, selection, reactions */
+    --lp-cream: #eee4cf;
+    /* sticker paper */
+    --lp-blue: #9fb0e8;
+    /* links, mentions */
+    --lp-green: #8fc2a4;
+    /* online, success */
+
+    --lp-ink: #16130f;
+    /* dark type on bright paper */
+    --lp-outline: #36322c;
+    /* ink lines on dark paper */
+    --lp-shadow-c: #050403;
+    /* hard shadows */
+
+    /* Card stock, darkest -> lightest (warm charcoal, never blue-grey) */
+    --lp-paper-0: #0d0c0b;
+    /* app frame, server bar */
+    --lp-paper-1: #131210;
+    /* channel list, member list */
+    --lp-paper-2: #181715;
+    /* chat */
+    --lp-paper-3: #201e1b;
+    /* cards, header, inputs */
+    --lp-paper-4: #2a2723;
+    /* menus, raised things */
+
+    /* Text */
+    --lp-text-strong: #f0e9dc;
+    --lp-text: #cfc7b8;
+    --lp-text-muted: #948b7d;
+    --lp-text-subtle: #635c52;
+
+    /* Lines + shape */
+    --lp-line: 2px solid var(--lp-outline);
+    --lp-line-soft: rgb(255 238 205 / 0.07);
+    --lp-radius-sm: 6px;
+    --lp-radius-md: 10px;
+    --lp-radius-lg: 14px;
+
+    /* Hard printed shadows (no blur, ever) */
+    --lp-shadow-sm: 2px 2px 0 var(--lp-shadow-c);
+    --lp-shadow: 4px 4px 0 var(--lp-shadow-c);
+    --lp-shadow-lg: 7px 7px 0 var(--lp-shadow-c);
+
+    /* Extras: set to "none" to switch one off */
+    --lp-nametag: block;
+    --lp-say-it: block;
+    --lp-grain: 0.06;
+    /* 0 = smooth paper */
+
+    /* Sticker text */
+    --lp-nametag-text: "HELLO my name is";
+    --lp-say-it-text: "✎ go on, say it";
+
+    /* Motion */
+    --lp-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+    --lp-bounce: cubic-bezier(0.34, 1.6, 0.6, 1);
+    --lp-fast: 110ms;
+    --lp-med: 190ms;
+    --lp-slow: 320ms;
+
+    /* Paper grain (SVG noise) */
+    --lp-grain-img: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 .94 0 0 0 0 .82 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* =========================================================================
+   2. TYPOGRAPHY
+   html:root:root outranks Discord's per-language :root:lang() font rules.
+   ========================================================================= */
+html:root:root {
+    --font-primary: var(--lp-font);
+    --font-display: var(--lp-font);
+    --font-headline: var(--lp-font-display);
+    --font-code: var(--lp-font-code);
+    --primitive-typography-family-dm-sans: var(--lp-font);
+    --primitive-typography-family-rethink-sans: var(--lp-font);
+    color-scheme: dark;
+}
+
+body {
+    font-family: var(--lp-font);
+    font-optical-sizing: auto;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+}
+
+/* =========================================================================
+   3. DISCORD DESIGN TOKENS
+   Every appearance gets the same card stock. Nitro profile themes keep
+   their own colours.
+   ========================================================================= */
+:root:is(.theme-light, .theme-dark, .theme-darker, .theme-midnight),
+:root :is(.theme-light, .theme-dark, .theme-darker, .theme-midnight):not(.custom-user-profile-theme) {
+    /* Backgrounds */
+    --app-frame-background: var(--lp-paper-0);
+    --background-base-lowest: var(--lp-paper-0);
+    --background-base-lower: var(--lp-paper-2);
+    --background-base-low: var(--lp-paper-1);
+    --background-surface-high: var(--lp-paper-3);
+    --background-surface-higher: var(--lp-paper-3);
+    --background-surface-highest: var(--lp-paper-4);
+    --background-mod-subtle: rgb(255 238 205 / 0.03);
+    --background-mod-muted: rgb(255 238 205 / 0.05);
+    --background-mod-normal: rgb(255 238 205 / 0.07);
+    --background-mod-strong: rgb(255 238 205 / 0.11);
+    --background-code: var(--lp-paper-1);
+    --background-scrim: rgb(5 4 3 / 0.78);
+    --background-brand: var(--lp-red);
+    --background-accent: var(--lp-gold);
+    --modal-background: var(--lp-paper-3);
+    --card-background-default: var(--lp-paper-3);
+    --chat-background-default: var(--lp-paper-3);
+    --custom-channel-members-bg: var(--lp-paper-1);
+
+    /* Brand */
+    --brand-360: #eda896;
+    --brand-400: #e8937e;
+    --brand-500: var(--lp-red);
+    --brand-500-hsl: 11 66% 63%;
+    --brand-560: var(--lp-red-deep);
+    --brand-600: #ad5340;
+    --text-brand: #eb9c88;
+    --icon-brand: var(--lp-red);
+    --control-primary-background-default: var(--lp-red);
+    --control-primary-background-hover: #e88d77;
+    --control-primary-background-active: var(--lp-red-deep);
+    --control-primary-text-default: var(--lp-ink);
+    --control-secondary-background-default: var(--lp-paper-3);
+    --control-secondary-background-hover: var(--lp-paper-4);
+    --control-secondary-background-active: var(--lp-paper-1);
+    --control-secondary-border-default: var(--lp-outline);
+    --control-secondary-border-hover: var(--lp-text-muted);
+    --control-secondary-border-active: var(--lp-text-muted);
+    --togglebutton-background-selected: color-mix(in oklab, var(--lp-gold) 16%, var(--lp-paper-3));
+    --togglebutton-border-selected: var(--lp-gold);
+    --reaction-background-active: color-mix(in oklab, var(--lp-gold) 16%, var(--lp-paper-3));
+    --reaction-border-active: var(--lp-gold);
+    --radio-border-selected-default: var(--lp-red);
+    --keyword-highlight-background: color-mix(in oklab, var(--lp-gold) 30%, transparent);
+    --mention-foreground: #c3cdf3;
+    --mention-background: color-mix(in oklab, var(--lp-blue) 20%, transparent);
+
+    /* Status */
+    --status-positive: var(--lp-green);
+    --status-warning: var(--lp-gold);
+    --status-danger: var(--lp-red);
+
+    /* Text */
+    --text-strong: var(--lp-text-strong);
+    --text-default: var(--lp-text);
+    --text-normal: var(--lp-text);
+    --text-muted: var(--lp-text-muted);
+    --text-subtle: var(--lp-text-subtle);
+    --text-link: var(--lp-blue);
+    --header-primary: var(--lp-text-strong);
+    --header-secondary: var(--lp-text-muted);
+    --chat-text-muted: var(--lp-text-muted);
+    --channels-default: var(--lp-text-muted);
+
+    /* Interactive */
+    --interactive-normal: var(--lp-text-muted);
+    --interactive-hover: var(--lp-text-strong);
+    --interactive-active: var(--lp-text-strong);
+    --interactive-text-default: var(--lp-text-muted);
+    --interactive-text-hover: var(--lp-text-strong);
+    --interactive-text-active: var(--lp-text-strong);
+    --interactive-icon-default: var(--lp-text-muted);
+    --interactive-icon-hover: var(--lp-text-strong);
+    --interactive-icon-active: var(--lp-text-strong);
+    --interactive-muted: var(--lp-text-subtle);
+    --interactive-background-hover: color-mix(in oklab, var(--lp-gold) 9%, transparent);
+    --interactive-background-active: color-mix(in oklab, var(--lp-gold) 14%, transparent);
+    --interactive-background-selected: var(--lp-paper-3);
+    --interactive-accent-background-default: color-mix(in oklab, var(--lp-gold) 14%, var(--lp-paper-3));
+    --icon-default: var(--lp-text);
+    --icon-muted: var(--lp-text-muted);
+    --icon-subtle: var(--lp-text-subtle);
+    --icon-strong: var(--lp-text-strong);
+
+    /* Lines */
+    --border-subtle: var(--lp-line-soft);
+    --border-muted: var(--lp-line-soft);
+    --border-normal: rgb(255 238 205 / 0.14);
+    --border-strong: var(--lp-outline);
+    --border-focus: var(--lp-red);
+    --app-frame-border: var(--lp-outline);
+    --chat-border: var(--lp-outline);
+
+    /* Inputs */
+    --input-background-default: var(--lp-paper-3);
+    --input-border-default: var(--lp-outline);
+    --input-border-hover: var(--lp-text-muted);
+    --input-border-active: var(--lp-red);
+    --input-placeholder-text-default: var(--lp-text-subtle);
+    --input-text-default: var(--lp-text-strong);
+
+    /* Messages */
+    --message-background-hover: rgb(255 238 205 / 0.025);
+    --message-highlight-background-default: color-mix(in oklab, var(--lp-blue) 7%, transparent);
+    --message-highlight-background-hover: color-mix(in oklab, var(--lp-blue) 12%, transparent);
+    --message-mentioned-background-default: color-mix(in oklab, var(--lp-red) 8%, transparent);
+    --message-mentioned-background-hover: color-mix(in oklab, var(--lp-red) 12%, transparent);
+
+    /* Scrollbars */
+    --scrollbar-auto-thumb: var(--lp-outline);
+    --scrollbar-auto-track: transparent;
+    --scrollbar-thin-thumb: var(--lp-outline);
+    --scrollbar-thin-track: transparent;
+
+    /* Elevation: everything is printed, so shadows are hard offsets */
+    --shadow-low: var(--lp-shadow-sm);
+    --shadow-medium: var(--lp-shadow);
+    --shadow-high: var(--lp-shadow-lg);
+}
+
+::selection {
+    background: var(--lp-gold);
+    color: var(--lp-ink);
+}
+
+/* =========================================================================
+   4. APP SHELL + PAPER GRAIN
+   ========================================================================= */
+
+/* Grain over the whole app (never blocks clicks) */
+.app_QbT-Jy::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    pointer-events: none;
+    opacity: var(--lp-grain);
+    background-image: var(--lp-grain-img);
+    mix-blend-mode: screen;
+}
+
+.bar_3zSH5d {
+    background: var(--lp-paper-0) !important;
+    border-bottom: var(--lp-line);
+}
+
+.title_3zSH5d {
+    font-family: var(--lp-font-display);
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.02em;
+    color: var(--lp-text-muted);
+}
+
+.winButtonClose_3zSH5d:hover {
+    background-color: var(--lp-red) !important;
+    color: var(--lp-ink) !important;
+}
+
+/* =========================================================================
+   5. SERVER BAR
+   ========================================================================= */
+.guilds_pog62O {
+    background: var(--lp-paper-0) !important;
+    border-right: var(--lp-line);
+}
+
+/* Icons are little paper cut-outs: they lift and tilt on hover, press on click */
+.blobContainer_IaPwK5 {
+    filter: drop-shadow(3px 3px 0 var(--lp-shadow-c));
+    transition: transform var(--lp-med) var(--lp-bounce), filter var(--lp-med) var(--lp-ease);
+}
+
+.blobContainer_IaPwK5:hover {
+    transform: translate(-1px, -1px) rotate(-4deg);
+    filter: drop-shadow(5px 5px 0 var(--lp-shadow-c));
+}
+
+.blobContainer_IaPwK5:active {
+    transform: translate(2px, 2px);
+    filter: drop-shadow(0 0 0 var(--lp-shadow-c));
+}
+
+/* Selected server: printed slightly off-register, with a red ink offset */
+.blobContainer_IaPwK5.selected_IaPwK5 {
+    filter: drop-shadow(3px 3px 0 var(--lp-red));
+}
+
+/* Perforated tear line */
+.guildSeparator_3WHVfy {
+    background: repeating-linear-gradient(90deg, var(--lp-text-subtle) 0 3px, transparent 3px 6px) !important;
+    height: 2px !important;
+    border-radius: 0;
+}
+
+/* Selected / unread pill */
+.item__o8_Xq {
+    background: var(--lp-cream) !important;
+}
+
+.numberBadge_lMvXrQ {
+    background-color: var(--lp-red) !important;
+    color: var(--lp-ink) !important;
+    font-family: var(--lp-font);
+    font-weight: 800;
+    box-shadow: 0 0 0 2px var(--lp-shadow-c);
+}
+
+/* =========================================================================
+   6. CHANNEL LIST
+   Channel rows have no stable class, so these rules use Discord's list-item ids.
+   ========================================================================= */
+.sidebarList_pog62O {
+    background: var(--lp-paper-1) !important;
+    border: none !important;
+    border-right: var(--lp-line) !important;
+    border-radius: 0 !important;
+}
+
+[data-list-item-id^="channels___"] {
+    border-radius: var(--lp-radius-sm) !important;
+    font-weight: 600;
+    transition:
+        background-color var(--lp-fast) var(--lp-ease),
+        box-shadow var(--lp-med) var(--lp-ease),
+        transform var(--lp-med) var(--lp-bounce);
+}
+
+[data-list-item-id^="channels___"]:hover {
+    background: color-mix(in oklab, var(--lp-gold) 8%, transparent) !important;
+    transform: translateX(3px);
+}
+
+/* Selected channel: a raised paper slip with a red ink edge */
+[data-list-item-id^="channels___"][aria-current="page"],
+[aria-selected="true"]>[data-list-item-id^="channels___"],
+li[class*="selected"] [data-list-item-id^="channels___"] {
+    background: var(--lp-paper-3) !important;
+    color: var(--lp-text-strong) !important;
+    box-shadow: inset 0 0 0 2px var(--lp-outline), inset 4px 0 0 var(--lp-red), var(--lp-shadow-sm);
+    transform: none;
+}
+
+[data-list-item-id^="channels___"][aria-current="page"] :is([class*="name"], svg),
+[aria-selected="true"]>[data-list-item-id^="channels___"] :is([class*="name"], svg),
+li[class*="selected"] [data-list-item-id^="channels___"] :is([class*="name"], svg) {
+    color: var(--lp-text-strong) !important;
+}
+
+/* DM list */
+.channel_zln_tS {
+    border-radius: var(--lp-radius-sm);
+}
+
+/* =========================================================================
+   7. USER PANEL: a card wearing a "HELLO my name is" sticker
+   ========================================================================= */
+.panels_pog62O {
+    background: var(--lp-paper-3) !important;
+    border: var(--lp-line) !important;
+    border-radius: var(--lp-radius-md) !important;
+    box-shadow: var(--lp-shadow) !important;
+    overflow: visible !important;
+}
+
+.panels_pog62O::before {
+    content: var(--lp-nametag-text);
+    display: var(--lp-nametag);
+    position: absolute;
+    top: -13px;
+    left: 12px;
+    z-index: 2;
+    padding: 1px 10px 2px;
+    background: var(--lp-red);
+    color: var(--lp-cream);
+    border: var(--lp-line);
+    border-color: var(--lp-shadow-c);
+    border-radius: 6px;
+    font-family: var(--lp-font-hand);
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1.1;
+    rotate: -3deg;
+    box-shadow: var(--lp-shadow-sm);
+    pointer-events: none;
+    transform-origin: 20% 80%;
+}
+
+.avatar_g6VwXp {
+    transition: transform var(--lp-med) var(--lp-bounce);
+}
+
+.avatar_g6VwXp:hover {
+    transform: rotate(-6deg) scale(1.05);
+}
+
+.nameTag_Lj8I29 {
+    font-weight: 800;
+}
+
+/* =========================================================================
+   8. CHAT
+   ========================================================================= */
+
+/* Dotted notebook paper */
+.chatContent_z_gUBg {
+    background:
+        radial-gradient(circle, rgb(255 238 205 / 0.05) 1px, transparent 1.4px) 0 0 / 22px 22px,
+        var(--lp-paper-2) !important;
+}
+
+/* Channel header */
+.title_z_gUBg {
+    background: var(--lp-paper-3) !important;
+    border-bottom: var(--lp-line) !important;
+    box-shadow: 0 3px 0 var(--lp-shadow-c) !important;
+    position: relative;
+    z-index: 2;
+}
+
+.titleWrapper_ybUK7Z h1,
+.titleWrapper_ybUK7Z [class*="title"] {
+    font-family: var(--lp-font-display);
+    font-weight: 700;
+    font-size: 16px;
+    letter-spacing: 0.005em;
+    color: var(--lp-text-strong);
+}
+
+/* Message rows */
+.message_SY_P2T {
+    border-radius: var(--lp-radius-sm) !important;
+    margin-inline: 10px;
+    transition: background-color var(--lp-fast) var(--lp-ease), box-shadow var(--lp-med) var(--lp-ease);
+}
+
+.message_SY_P2T:hover {
+    box-shadow: inset 3px 0 0 var(--lp-gold);
+}
+
+.groupStart_SY_P2T {
+    margin-top: 8px;
+}
+
+.mentioned_SY_P2T::before {
+    background: var(--lp-red) !important;
+    width: 4px !important;
+}
+
+.replying_SY_P2T::before {
+    background: var(--lp-blue) !important;
+    width: 4px !important;
+}
+
+/* Usernames: chunky, with a highlighter swipe on hover */
+.header_2i8Bfm [class*="username"] {
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    background: linear-gradient(transparent 60%, color-mix(in oklab, var(--lp-gold) 30%, transparent) 60%) no-repeat 0 0 / 0% 100%;
+    transition: background-size var(--lp-slow) var(--lp-ease);
+}
+
+.message_SY_P2T:hover .header_2i8Bfm [class*="username"] {
+    background-size: 100% 100%;
+}
+
+/* Timestamps: rubber stamps in red ink */
+.header_2i8Bfm time {
+    display: inline-block;
+    font-family: var(--lp-font-code);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: color-mix(in oklab, var(--lp-red) 80%, var(--lp-text-muted)) !important;
+    border: 1.5px solid currentColor;
+    border-radius: 4px;
+    padding: 0 4px;
+    rotate: -1.5deg;
+    opacity: 0.75;
+}
+
+/* Avatars: rounded paper squares that tilt when their message is hovered */
+.avatar_2i8Bfm {
+    border-radius: 10px !important;
+    outline: var(--lp-line);
+    box-shadow: var(--lp-shadow-sm);
+    transition: rotate var(--lp-med) var(--lp-bounce), scale var(--lp-med) var(--lp-bounce);
+}
+
+.message_SY_P2T:hover .avatar_2i8Bfm {
+    rotate: -4deg;
+    scale: 1.05;
+}
+
+.botTag_2i8Bfm {
+    background: var(--lp-cream) !important;
+    color: var(--lp-ink) !important;
+    font-family: var(--lp-font-code);
+    font-weight: 700;
+}
+
+.repliedMessage_2i8Bfm::before {
+    border-color: var(--lp-outline) !important;
+    border-width: 2px 0 0 2px !important;
+}
+
+/* Markdown */
+.markup_ku1OHH {
+    color: var(--lp-text);
+}
+
+.markup_ku1OHH strong {
+    font-weight: 800;
+    color: var(--lp-text-strong);
+}
+
+.markup_ku1OHH :is(h1, h2, h3) {
+    font-family: var(--lp-font-display);
+    color: var(--lp-text-strong);
+}
+
+.markup_ku1OHH code.inline {
+    background: var(--lp-paper-4) !important;
+    color: var(--lp-gold) !important;
+    border: 1.5px solid var(--lp-outline);
+    border-radius: 4px;
+    padding: 0 0.3em;
+}
+
+/* Code blocks: typewritten index cards */
+.markup_ku1OHH pre {
+    border: none !important;
+    background: transparent !important;
+}
+
+.codeContainer_ku1OHH,
+.markup_ku1OHH pre>code {
+    border-radius: var(--lp-radius-md) !important;
+}
+
+.markup_ku1OHH pre>code {
+    background:
+        linear-gradient(90deg, transparent 30px, color-mix(in oklab, var(--lp-red) 40%, transparent) 30px 32px, transparent 32px),
+        repeating-linear-gradient(transparent 0 calc(1.375em - 1px), rgb(255 238 205 / 0.05) calc(1.375em - 1px) 1.375em),
+        var(--lp-paper-1) !important;
+    border: var(--lp-line) !important;
+    box-shadow: var(--lp-shadow);
+    padding-left: 42px !important;
+    color: var(--lp-text-strong);
+}
+
+.blockquoteDivider_ku1OHH {
+    background: var(--lp-gold) !important;
+    width: 4px !important;
+    border-radius: 2px;
+}
+
+.markup_ku1OHH blockquote {
+    font-family: var(--lp-font-hand);
+    font-size: 1.3em;
+    line-height: 1.2;
+}
+
+.markup_ku1OHH .mention,
+.roleMention_ku1OHH {
+    font-weight: 700;
+    border-radius: 4px;
+}
+
+.markup_ku1OHH a {
+    text-decoration: underline;
+    text-decoration-thickness: 1.5px;
+    text-underline-offset: 2px;
+}
+
+/* Embeds: dog-eared index cards */
+.embedFull_XyW1ZT {
+    background:
+        linear-gradient(225deg, var(--lp-paper-2) 0 12px, var(--lp-outline) 12px 14px, var(--lp-paper-4) 14px 20px, transparent 20px) top right / 24px 24px no-repeat,
+        var(--lp-paper-3) !important;
+    outline: var(--lp-line);
+    box-shadow: var(--lp-shadow);
+    border-radius: var(--lp-radius-md) !important;
+}
+
+.embedTitle_XyW1ZT {
+    font-family: var(--lp-font-display);
+    font-weight: 700;
+}
+
+.embedAuthor_XyW1ZT,
+.embedFooter_XyW1ZT {
+    font-family: var(--lp-font-code);
+    font-size: 11px;
+}
+
+/* Reactions: buttons you can press */
+.reaction_MmKct8 {
+    background: var(--lp-paper-3) !important;
+    border: var(--lp-line) !important;
+    border-radius: 999px !important;
+    box-shadow: var(--lp-shadow-sm);
+    transition: transform var(--lp-fast) var(--lp-ease), box-shadow var(--lp-fast) var(--lp-ease), background-color var(--lp-fast) var(--lp-ease);
+}
+
+.reaction_MmKct8:hover {
+    transform: translate(-1px, -1px);
+    box-shadow: 3px 3px 0 var(--lp-shadow-c);
+}
+
+.reaction_MmKct8:active {
+    transform: translate(2px, 2px);
+    box-shadow: 0 0 0 var(--lp-shadow-c);
+}
+
+.reactionMe_MmKct8 {
+    background: color-mix(in oklab, var(--lp-gold) 16%, var(--lp-paper-3)) !important;
+    border-color: var(--lp-gold) !important;
+}
+
+.reactionCount_MmKct8 {
+    color: var(--lp-text-strong) !important;
+    font-weight: 800;
+}
+
+.reactionMe_MmKct8 .reactionCount_MmKct8 {
+    color: var(--lp-gold) !important;
+}
+
+/* Typing indicator: handwritten */
+.typing_z_gUBg {
+    font-family: var(--lp-font-hand);
+    font-size: 16px;
+    color: var(--lp-text-muted);
+}
+
+/* =========================================================================
+   9. TEXT BOX: a card that lifts off the page, with a note that pops up
+   ========================================================================= */
+.channelTextArea_2x8-Qn {
+    position: relative;
+}
+
+.channelTextArea_2x8-Qn .scrollableContainer_2x8-Qn {
+    background: var(--lp-paper-3) !important;
+    border: var(--lp-line) !important;
+    border-radius: var(--lp-radius-lg) !important;
+    box-shadow: var(--lp-shadow);
+    transition: box-shadow var(--lp-med) var(--lp-ease), transform var(--lp-med) var(--lp-ease), border-color var(--lp-med) var(--lp-ease);
+}
+
+.channelTextArea_2x8-Qn:focus-within .scrollableContainer_2x8-Qn {
+    border-color: var(--lp-text-subtle) !important;
+    box-shadow: 6px 6px 0 var(--lp-red), 6px 6px 0 2px var(--lp-shadow-c);
+    transform: translate(-2px, -2px);
+}
+
+.channelTextArea_2x8-Qn::after {
+    content: var(--lp-say-it-text);
+    display: var(--lp-say-it);
+    position: absolute;
+    top: -14px;
+    right: 22px;
+    z-index: 2;
+    padding: 0 10px 1px;
+    background: var(--lp-cream);
+    color: var(--lp-ink);
+    border: var(--lp-line);
+    border-color: var(--lp-shadow-c);
+    border-radius: 6px;
+    font-family: var(--lp-font-hand);
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.2;
+    rotate: 2deg;
+    box-shadow: var(--lp-shadow-sm);
+    pointer-events: none;
+    opacity: 0;
+    translate: 0 6px;
+    transition: opacity var(--lp-med) var(--lp-ease), translate var(--lp-med) var(--lp-bounce);
+}
+
+.channelTextArea_2x8-Qn:focus-within::after {
+    opacity: 1;
+    translate: -2px -2px;
+}
+
+.channelTextArea_2x8-Qn [role="textbox"] {
+    caret-color: var(--lp-red);
+}
+
+.channelTextArea_2x8-Qn .button_2x8-Qn {
+    transition: transform var(--lp-med) var(--lp-bounce);
+}
+
+.channelTextArea_2x8-Qn .button_2x8-Qn:hover {
+    transform: rotate(-10deg) scale(1.12);
+}
+
+/* =========================================================================
+   10. MEMBER LIST
+   ========================================================================= */
+.membersWrap_86es0b,
+.container_86es0b,
+.members_86es0b {
+    background: var(--lp-paper-1) !important;
+}
+
+.membersWrap_86es0b {
+    border-left: var(--lp-line);
+}
+
+/* Group headers: strips of translucent washi tape */
+.membersGroup_86es0b {
+    width: fit-content;
+    margin-left: 10px;
+    padding-inline: 10px !important;
+    font-family: var(--lp-font-code);
+    font-weight: 700;
+    font-size: 10px !important;
+    letter-spacing: 0.06em;
+    color: var(--lp-text-strong) !important;
+    background:
+        repeating-linear-gradient(45deg, transparent 0 6px, rgb(255 238 205 / 0.05) 6px 9px),
+        color-mix(in oklab, var(--lp-cream) 13%, transparent);
+    rotate: -1deg;
+}
+
+.container_J1Adu_ {
+    border-radius: var(--lp-radius-sm) !important;
+    transition: background-color var(--lp-fast) var(--lp-ease), transform var(--lp-med) var(--lp-bounce);
+}
+
+.container_J1Adu_:hover {
+    background: color-mix(in oklab, var(--lp-gold) 8%, transparent) !important;
+    transform: translateX(3px);
+}
+
+.container_J1Adu_.selected_J1Adu_ {
+    background: var(--lp-paper-3) !important;
+    box-shadow: inset 0 0 0 2px var(--lp-outline);
+}
+
+.name_J1Adu_ {
+    font-weight: 700;
+}
+
+/* =========================================================================
+   11. FLOATING UI: menus, tooltips, popouts, modals
+   ========================================================================= */
+.menu_M3qk4j {
+    background: var(--lp-paper-4) !important;
+    border: var(--lp-line) !important;
+    border-radius: var(--lp-radius-md) !important;
+    box-shadow: var(--lp-shadow-lg) !important;
+}
+
+.item_M3qk4j {
+    border-radius: var(--lp-radius-sm);
+    font-weight: 600;
+    transition: background-color var(--lp-fast) var(--lp-ease), color var(--lp-fast) var(--lp-ease), padding var(--lp-med) var(--lp-bounce);
+}
+
+.item_M3qk4j.focused_M3qk4j {
+    background: var(--lp-cream) !important;
+    color: var(--lp-ink) !important;
+    padding-inline-start: 14px;
+}
+
+.item_M3qk4j.colorDanger_M3qk4j {
+    color: #eb9c88 !important;
+}
+
+.item_M3qk4j.colorDanger_M3qk4j.focused_M3qk4j {
+    background: var(--lp-red) !important;
+    color: var(--lp-ink) !important;
+}
+
+.separator_M3qk4j {
+    background: repeating-linear-gradient(90deg, var(--lp-outline) 0 3px, transparent 3px 6px) !important;
+    height: 2px !important;
+}
+
+/* Tooltips: little paper slips */
+.tooltipPrimary_3_v8qp {
+    --tooltip-pointer-bg: var(--lp-paper-4);
+    background: var(--lp-paper-4) !important;
+    color: var(--lp-text-strong) !important;
+    border: var(--lp-line);
+    border-radius: var(--lp-radius-sm);
+    box-shadow: var(--lp-shadow-sm);
+    font-weight: 700;
+}
+
+.tooltipPrimary_3_v8qp .tooltipContent_3_v8qp {
+    color: var(--lp-text-strong) !important;
+}
+
+.tooltipPrimary_3_v8qp .tooltipPointer_3_v8qp {
+    border-top-color: var(--lp-paper-4);
+}
+
+.outer_P1YEjQ {
+    border: var(--lp-line);
+    border-radius: var(--lp-radius-lg);
+    box-shadow: var(--lp-shadow-lg);
+}
+
+.root__KoJTP {
+    border: var(--lp-line);
+    border-radius: var(--lp-radius-lg);
+    box-shadow: 9px 9px 0 var(--lp-shadow-c);
+}
+
+.header__KoJTP h1,
+.header__KoJTP [class*="title"] {
+    font-family: var(--lp-font-display);
+    font-weight: 700;
+}
+
+/* =========================================================================
+   12. CONTROLS
+   ========================================================================= */
+
+/* Filled buttons: physical buttons that press into the page */
+.lookFilled_9OQtot {
+    border: var(--lp-line) !important;
+    border-color: var(--lp-shadow-c) !important;
+    border-radius: var(--lp-radius-md) !important;
+    box-shadow: var(--lp-shadow-sm);
+    font-weight: 800;
+    transition: transform var(--lp-fast) var(--lp-ease), box-shadow var(--lp-fast) var(--lp-ease), background-color var(--lp-fast) var(--lp-ease);
+}
+
+.lookFilled_9OQtot:not(:disabled):hover {
+    transform: translate(-1px, -1px);
+    box-shadow: 3px 3px 0 var(--lp-shadow-c);
+}
+
+.lookFilled_9OQtot:not(:disabled):active {
+    transform: translate(2px, 2px);
+    box-shadow: 0 0 0 var(--lp-shadow-c);
+}
+
+.lookFilled_9OQtot.colorBrand_9OQtot:not(:disabled),
+.lookFilled_9OQtot.colorRed_9OQtot:not(:disabled) {
+    background-color: var(--lp-red) !important;
+    color: var(--lp-ink) !important;
+}
+
+.lookFilled_9OQtot.colorBrand_9OQtot .contents_9OQtot,
+.lookFilled_9OQtot.colorRed_9OQtot .contents_9OQtot {
+    color: var(--lp-ink) !important;
+}
+
+.lookOutlined_9OQtot {
+    border-width: 2px !important;
+    border-radius: var(--lp-radius-md) !important;
+}
+
+.inputDefault_cZux1n {
+    background: var(--lp-paper-3) !important;
+    border: var(--lp-line) !important;
+    border-radius: var(--lp-radius-md) !important;
+    caret-color: var(--lp-red);
+    transition: box-shadow var(--lp-med) var(--lp-ease);
+}
+
+.inputDefault_cZux1n:focus {
+    box-shadow: 3px 3px 0 var(--lp-red);
+}
+
+/* Settings sidebar */
+.side_6zZYhF .header_6zZYhF {
+    font-family: var(--lp-font-code);
+    font-weight: 700;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    color: var(--lp-red);
+}
+
+.side_6zZYhF .item_6zZYhF {
+    border-radius: var(--lp-radius-sm);
+    font-weight: 600;
+    transition: background-color var(--lp-fast) var(--lp-ease), transform var(--lp-med) var(--lp-bounce);
+}
+
+.side_6zZYhF .item_6zZYhF:hover {
+    background: color-mix(in oklab, var(--lp-gold) 8%, transparent);
+    transform: translateX(3px);
+}
+
+.side_6zZYhF .item_6zZYhF.selected_6zZYhF {
+    background: var(--lp-paper-3) !important;
+    color: var(--lp-text-strong) !important;
+    box-shadow: inset 0 0 0 2px var(--lp-outline), inset 4px 0 0 var(--lp-red), var(--lp-shadow-sm);
+}
+
+.side_6zZYhF .separator_6zZYhF {
+    background: repeating-linear-gradient(90deg, var(--lp-outline) 0 3px, transparent 3px 6px);
+    height: 2px;
+}
+
+/* Scrollbars with a paper rim */
+:is(.thin_tqapBM, .auto_tqapBM)::-webkit-scrollbar-thumb {
+    border-radius: 999px !important;
+    border: 2px solid var(--lp-paper-2) !important;
+}
+
+:is(.thin_tqapBM, .auto_tqapBM)::-webkit-scrollbar-thumb:hover {
+    background-color: var(--lp-text-subtle) !important;
+}
+
+/* =========================================================================
+   13. ANIMATIONS: skipped when "Reduce motion" is on (Discord or OS)
+   ========================================================================= */
+
+/* A stamp coming down onto the page */
+@keyframes lp-stamp {
+    0% {
+        opacity: 0;
+        transform: scale(1.06) translateY(-3px);
+    }
+
+    55% {
+        opacity: 1;
+        transform: scale(0.99);
+    }
+
+    100% {
+        transform: none;
+    }
+}
+
+/* A paper slip dropping into place */
+@keyframes lp-slip {
+    from {
+        opacity: 0;
+        transform: translate(3px, -6px) rotate(-1.5deg);
+    }
+
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+/* A sticker being smoothed down */
+@keyframes lp-wiggle {
+
+    0%,
+    100% {
+        rotate: -3deg;
+    }
+
+    35% {
+        rotate: 2deg;
+    }
+
+    70% {
+        rotate: -1deg;
+    }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+
+    /* New messages get stamped onto the page */
+    html:not(.reduce-motion) .messageListItem_SY_P2T:last-child .message_SY_P2T {
+        animation: lp-stamp 340ms var(--lp-ease) backwards;
+    }
+
+    /* Menus and popouts drop in like paper slips */
+    html:not(.reduce-motion) .menu_M3qk4j {
+        animation: lp-slip var(--lp-med) var(--lp-bounce) both;
+        transform-origin: top left;
+    }
+
+    html:not(.reduce-motion) .outer_P1YEjQ {
+        animation: lp-slip var(--lp-slow) var(--lp-bounce) both;
+    }
+
+    /* Modals get stamped down */
+    html:not(.reduce-motion) .root__KoJTP {
+        animation: lp-stamp 300ms var(--lp-ease) both;
+    }
+
+    /* The name tag wiggles when you hover the user panel */
+    html:not(.reduce-motion) .panels_pog62O:hover::before {
+        animation: lp-wiggle 0.55s ease-in-out;
+    }
+}
+
+/* Reduce motion: also drop the hover movement */
+@media (prefers-reduced-motion: reduce) {
+
+    .blobContainer_IaPwK5:hover,
+    [data-list-item-id^="channels___"]:hover,
+    .container_J1Adu_:hover,
+    .reaction_MmKct8:hover,
+    .lookFilled_9OQtot:not(:disabled):hover,
+    .side_6zZYhF .item_6zZYhF:hover,
+    .avatar_g6VwXp:hover,
+    .channelTextArea_2x8-Qn .button_2x8-Qn:hover,
+    .channelTextArea_2x8-Qn:focus-within .scrollableContainer_2x8-Qn {
+        transform: none;
+    }
+
+    .message_SY_P2T:hover .avatar_2i8Bfm {
+        rotate: none;
+        scale: none;
+    }
+}
+
+html.reduce-motion :is(.blobContainer_IaPwK5, [data-list-item-id^="channels___"], .container_J1Adu_, .reaction_MmKct8, .lookFilled_9OQtot, .side_6zZYhF .item_6zZYhF, .avatar_g6VwXp, .channelTextArea_2x8-Qn .button_2x8-Qn):hover,
+html.reduce-motion .channelTextArea_2x8-Qn:focus-within .scrollableContainer_2x8-Qn {
+    transform: none;
+}
+
+html.reduce-motion .message_SY_P2T:hover .avatar_2i8Bfm {
+    rotate: none;
+    scale: none;
+}
