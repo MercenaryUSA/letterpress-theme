@@ -2,7 +2,7 @@
 
 ![Letterpress theme thumbnail](assets/thumbnail.jpg)
 
-A dark stationery theme for Discord: warm charcoal card stock, inked outlines, hard printed shadows and three inks (stamp red, old gold, cream).
+A dark paper-like / letter-press theme for Discord: warm charcoal card stock, inked outlines, hard printed shadows and three inks (stamp red, old gold, cream).
 
 - Buttons and reactions press into the page
 - New messages get stamped on; menus and popouts drop in like paper slips
