@@ -1,7 +1,7 @@
 /**
  * @name Letterpress
  * @author Mercenary
- * @version 1.0.0
+ * @version 1.0.1
  * @description A dark paper, letterpress-style theme for Discord.
  * @source https://github.com/MercenaryUSA/letterpress-theme
  * @website https://github.com/MercenaryUSA/letterpress-theme
@@ -388,7 +388,14 @@ li[class*="selected"] [data-list-item-id^="channels___"] :is([class*="name"], sv
     overflow: visible !important;
 }
 
-.panels_pog62O::before {
+/* The sticker sits on the user area itself, so it stays put when
+   Spotify, voice or Listening Along cards appear above it */
+.container_g6VwXp {
+    position: relative;
+    overflow: visible !important;
+}
+
+.container_g6VwXp::before {
     content: var(--lp-nametag-text);
     display: var(--lp-nametag);
     position: absolute;
@@ -1011,7 +1018,7 @@ li[class*="selected"] [data-list-item-id^="channels___"] :is([class*="name"], sv
     }
 
     /* The name tag wiggles when you hover the user panel */
-    html:not(.reduce-motion) .panels_pog62O:hover::before {
+    html:not(.reduce-motion) .container_g6VwXp:hover::before {
         animation: lp-wiggle 0.55s ease-in-out;
     }
 }
