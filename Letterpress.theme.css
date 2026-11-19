@@ -1,7 +1,7 @@
 /**
  * @name Letterpress
  * @author Mercenary
- * @version 1.0.1
+ * @version 1.0.2
  * @description A dark paper, letterpress-style theme for Discord.
  * @source https://github.com/MercenaryUSA/letterpress-theme
  * @website https://github.com/MercenaryUSA/letterpress-theme
@@ -798,6 +798,11 @@ li[class*="selected"] [data-list-item-id^="channels___"] :is([class*="name"], sv
     background: var(--lp-cream) !important;
     color: var(--lp-ink) !important;
     padding-inline-start: 14px;
+}
+
+/* Labels, sub-text and icons inside a highlighted item follow its ink colour */
+.item_M3qk4j.focused_M3qk4j * {
+    color: inherit !important;
 }
 
 .item_M3qk4j.colorDanger_M3qk4j {
